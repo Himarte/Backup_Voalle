@@ -37,11 +37,10 @@ pip install paramiko schedule
 
     ```python
     local_file_path = "/mnt/MestreDosMagos/Sistemas/bkp"
-    remote_file_path = "/bkp/"
+    remote_file_path = "/bkp/"```
 
-# ...
+    Schedule the backup function to run every 12 hours
 
-# schedule the backup function to run every 12 hours
 ```schedule.every(12).hours.do(backup)
 ```
 
