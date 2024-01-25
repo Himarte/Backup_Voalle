@@ -35,14 +35,14 @@ pip install paramiko schedule
 2. **Configurações de Backup:**
    Personalize as configurações de backup no script, como os caminhos locais e remotos, bem como a frequência do agendamento.
 
-```python
-local_file_path = "/mnt/MestreDosMagos/Sistemas/bkp"
-remote_file_path = "/bkp/"
+    ```python
+    local_file_path = "/mnt/MestreDosMagos/Sistemas/bkp"
+    remote_file_path = "/bkp/"
 
 # ...
 
 # schedule the backup function to run every 12 hours
-schedule.every(12).hours.do(backup)
+```schedule.every(12).hours.do(backup)
 ```
 
 ## Execução em Segundo Plano
@@ -61,14 +61,5 @@ nohup python3 seu_script.py > output.log 2>&1 &
 Nota: Este comando redireciona tanto a saída padrão quanto os erros padrão para o arquivo output.log. Isso é útil para registrar todos os resultados, incluindo mensagens de erro, em um arquivo de log.
 
 ## Notas
-
-- **Segurança:**
-  Não compartilhe ou versione o arquivo de credenciais no repositório Git. Adicione-o ao seu `.gitignore` para garantir a segurança das informações sensíveis.
-
-- **Tratamento de Erros:**
-  Considere adicionar tratamento de erros para lidar com situações inesperadas durante a conexão SSH ou transferência de arquivos.
-
-- **Logs:**
-  Adicione recursos de log para registrar eventos importantes durante a execução do script.
 
 Lembre-se sempre de revisar e adaptar o script de acordo com os requisitos específicos do seu ambiente e política de segurança.
