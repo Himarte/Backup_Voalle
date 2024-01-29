@@ -22,40 +22,55 @@ pip install paramiko schedule
 
 ## Configuração
 
-1. **Arquivo de Credenciais:**
-   Certifique-se de ter um arquivo de credenciais (por exemplo, `credentials.py`) no mesmo diretório do script, contendo as informações necessárias para autenticação no servidor remoto. Exemplo:
+1. **Credenciais:**
+   Certifique-se de acertar as credenciais no script, contendo as informações necessárias para autenticação no servidor remoto. Exemplo:
 
-   ```python
-   # credentials.py
-   link = "endereco_do_servidor"
-   user = "nome_de_usuario"
-   senha = "senha_secreta"
-   ```
+```python
+# remote server credentials
+
+host = "synsuite.himarte.com.br"
+username = "backup_erp"
+password = "4WCDfvq!"
+port = 22
+```
 
 2. **Configurações de Backup:**
-   Personalize as configurações de backup no script, como os caminhos locais e remotos, bem como a frequência do agendamento.
+Personalize as configurações de backup no script, como os caminhos locais e remotos, bem como a frequência do agendamento.
 
-    ```python
-    local_file_path = "/mnt/MestreDosMagos/Sistemas/bkp"
-    remote_file_path = "/bkp/"
-    ```
+ ```python
+ local_file_path = "/root/bkp_voalle/bkp/"
+ remote_file_path = "/bkp/"
+ ```
 
-    Schedule the backup function to run every 12 hours
+ Schedule the backup function to run every time
 
-    ```python
-    schedule.every(12).hours.do(backup)
-    ```
+ ```python
+ schedule.every(5).minutes.do(backup)
+ ```
+
+# Acessar servidor local
+
+Para acessar o server local é recomendando acessar via SSH port:22, sendo possivel outros meios também.
+
+```bash
+ssh root@192.168.254.151 -22
+```
+
+Entrar no diretório em que o code se localiza:
+```bash
+cd bkp_voalle
+```
 
 ## Execução em Segundo Plano
 
 Certifique-se de executar o script em segundo plano, por exemplo, utilizando o utilitário `nohup`:
 
 ```bash
-nohup python3 seu_script.py > output.log 2>&1 &
+nohup python3 backup.py > backup.log 2>&1 &
 ```
 
     `python3 backup.py`: Executa o script Python.
-    `> output.log`: Redireciona a saída padrão para um arquivo chamado output.log.
+    `> backup.log`: Redireciona a saída padrão para um arquivo chamado output.log.
     `2>&1`: Redireciona os erros padrão para a mesma localização da saída padrão (ou seja, para output.log).
     `&`: Permite que o comando seja executado em segundo plano.
 
@@ -64,3 +79,20 @@ Nota: Este comando redireciona tanto a saída padrão quanto os erros padrão pa
 ## Notas
 
 Lembre-se sempre de revisar e adaptar o script de acordo com os requisitos específicos do seu ambiente e política de segurança.
+
+3. **Verificar se o código está rodando**
+
+```bash
+ps aux | grep '[b]ackup.py'
+```
+
+Nota: A resposta padrão deve ser algo como:
+
+```bash
+root@truenas[~/bkp_voalle]# ps aux | grep '[b]ackup.py'
+root        7647   0.8  0.4   39224  26772  5  SN   10:55        0:00.12 python3 backup.py (python3.9)
+```
+
+4. **Acessar diretório para transferir arquivo com WinSCP**
+
+WinSCP é o programa utilizado apra realizar acesso SSH para ter uma inrterface visual mais amigával. Através dela a transferência de arquivos é fácil, possibilitanto transferencia entre máquinas.
