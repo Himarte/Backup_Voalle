@@ -42,7 +42,8 @@ Personalize as configurações de backup no script, como os caminhos locais e re
  remote_file_path = "/bkp/"
  ```
 
-# Agendar a função de backup para ser executada todos os dias às 5 horas da manhã
+3.**Agendamento**
+Agendar a função de backup para ser executada todos os dias às 5 horas da manhã
 
 ```bash
 schedule.every().day.at("05:00").do(backup)
