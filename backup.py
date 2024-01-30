@@ -5,25 +5,18 @@ import time
 import glob
 import logging
 
-logging.basicConfig(filename='backup.log', level=logging.INFO)
+logging.basicConfig(filename="backup.log", level=logging.INFO)
+
 
 def print_progress(transferred, to_be_transferred):
     print(f"Progress: {transferred / to_be_transferred * 100:.2f}%")
 
+
 def backup():
-    local_file_path = "/root/bkp_voalle/bkp/"
+    local_file_path = "/mnt/MestreDosMagos/Sistemas/bkpVoalle"
     remote_file_path = "/bkp/"
 
     try:
-        # check the number of files in the backup directory
-        files = glob.glob(os.path.join(local_file_path, "*"))
-        files.sort(key=os.path.getmtime)
-
-        # if there are more than 10 files, delete the oldest ones
-        while len(files) > 10:
-            os.remove(files[0])
-            del files[0]
-
         # create ssh client
         ssh_client = paramiko.SSHClient()
 
@@ -34,13 +27,25 @@ def backup():
         port = 22
 
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh_client.connect(hostname=host, port=port, username=username, password=password)
+        ssh_client.connect(
+            hostname=host, port=port, username=username, password=password
+        )
 
         # create an SFTP client object
         ftp = ssh_client.open_sftp()
 
         # get list of all files in remote directory
         remote_files = ftp.listdir(remote_file_path)
+
+        # check the files in the backup directory
+        files = glob.glob(os.path.join(local_file_path, "*"))
+        files.sort(key=os.path.getmtime)
+
+        # if local file is not in remote files, delete it
+        for file in files:
+            if os.path.basename(file) not in remote_files:
+                os.remove(file)
+                files.remove(file)
 
         # download each file
         for file in remote_files:
@@ -57,8 +62,9 @@ def backup():
     except Exception as e:
         logging.error(f"Error during backup: {e}")
 
-# schedule the backup function to run every time
-schedule.every(5).minutes.do(backup)
+
+# Agendar a função de backup para ser executada todos os dias às 5 horas da manhã
+schedule.every().day.at("05:00").do(backup)
 
 while True:
     schedule.run_pending()
