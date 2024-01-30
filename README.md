@@ -2,16 +2,21 @@
 
 Este é um script Python projetado para rodar em segundo plano em um servidor Linux, realizando backups automáticos de arquivos de um servidor remoto para um diretório local. O script utiliza as bibliotecas `paramiko` para conexão SSH e `schedule` para agendamento de tarefas.
 
-## Descrição
+# Descrição
+O script realiza dois tipos de backup: um para dados e outro para arquivos do serviço Radius. Cada tipo de backup é tratado por funções específicas: BackupDados e BackupRadius.
 
-O script realiza a seguinte operação:
+Configurações
+O script está configurado para realizar os backups para os seguintes diretórios locais:
 
-1. Conecta-se ao servidor remoto por meio de uma conexão SSH utilizando a biblioteca `paramiko`.
-2. Verifica o número de arquivos no diretório de backup local e exclui os mais antigos se forem diferentes do arquivo remoto.
-3. Estabelece uma conexão SFTP (SSH File Transfer Protocol) para o servidor remoto.
-4. Baixa cada arquivo do diretório remoto para o diretório local de backup, exibindo o progresso da transferência.
-5. Agendamento da função de backup para ser executada toda dia as 5 horas da manhã usando a biblioteca `schedule`.
-6. Todo e qualuqer erro é armazenado no arquivo backup.log, localizado junto ao código no diretório.
+1. Backup de Dados:
+
+Diretório Local: /mnt/MestreDosMagos/Sistemas/bkpVoalle/Dados
+Servidor Remoto: synsuite.himarte.com.br
+
+2. Backup do Radius:
+
+Diretório Local: /mnt/MestreDosMagos/Sistemas/bkpVoalle/Radius
+Servidor Remoto: 190.111.179.188
 
 ## Requisitos
 
@@ -50,6 +55,12 @@ Agendar a função de backup para ser executada todos os dias às 5 horas da man
 schedule.every().day.at("05:00").do(backup)
 ```
 
+4. **Bibliotecas**
+Certifique-se de ter a biblioteca paramiko instalada no ambiente onde o script será executado:
+
+```bash
+pip install paramiko
+```
 # Acessar servidor local
 
 Para acessar o server local é recomendando acessar via SSH port:22, sendo possivel outros meios também.
