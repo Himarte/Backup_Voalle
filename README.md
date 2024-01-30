@@ -1,6 +1,6 @@
 # Backup Automático com Paramiko e Schedule
 
-Este é um script Python projetado para rodar em segundo plano em um servidor Linux, realizando backups automáticos de arquivos de um servidor remoto para um diretório local. O script utiliza as bibliotecas `paramiko` para conexão SSH e `schedule` para agendamento de tarefas.
+Este é um script Python desenvolvido para realizar backups automáticos de dados e arquivos de um servidor remoto para diretórios locais separados. O script utiliza as bibliotecas paramiko para conexão SSH, schedule para agendamento de tarefas e logging para registrar eventos importantes em um arquivo de log.
 
 # Descrição
 O script realiza dois tipos de backup: um para dados e outro para arquivos do serviço Radius. Cada tipo de backup é tratado por funções específicas: BackupDados e BackupRadius.
