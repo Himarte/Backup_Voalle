@@ -5,19 +5,6 @@ Este é um script Python desenvolvido para realizar backups automáticos de dado
 # Descrição
 O script realiza dois tipos de backup: um para dados e outro para arquivos do serviço Radius. Cada tipo de backup é tratado por funções específicas: BackupDados e BackupRadius.
 
-Configurações
-O script está configurado para realizar os backups para os seguintes diretórios locais:
-
-1. Backup de Dados:
-
-Diretório Local: /mnt/MestreDosMagos/Sistemas/bkpVoalle/Dados
-Servidor Remoto: synsuite.himarte.com.br
-
-2. Backup do Radius:
-
-Diretório Local: /mnt/MestreDosMagos/Sistemas/bkpVoalle/Radius
-Servidor Remoto: 190.111.179.188
-
 ## Requisitos
 
 Certifique-se de ter as seguintes bibliotecas instaladas no ambiente onde o script será executado:
@@ -34,18 +21,18 @@ pip install paramiko schedule
 ```python
 # remote server credentials
 
-host = "synsuite.himarte.com.br"
-username = "backup_erp"
-password = "4WCDfvq!"
-port = 22
+host = "remote_host"
+username = "username"
+password = "password"
+port = port
 ```
 
 2. **Configurações de Backup:**
 Personalize as configurações de backup no script, como os caminhos locais e remotos, bem como a frequência do agendamento.
 
  ```python
- local_file_path = "/mnt/MestreDosMagos/Sistemas/bkpVoalle"
- remote_file_path = "/bkp/"
+ local_file_path = "local_path"
+ remote_file_path = "remote_path"
  ```
 
 3.**Agendamento**
@@ -102,7 +89,7 @@ ps aux | grep '[b]ackup.py'
 Nota: A resposta padrão deve ser algo como:
 
 ```bash
-root@truenas[~/bkp_voalle]# ps aux | grep '[b]ackup.py'
+root@truenas[~/]# ps aux | grep '[b]ackup.py'
 root        7647   0.8  0.4   39224  26772  5  SN   10:55        0:00.12 python3 backup.py (python3.9)
 ```
 
