@@ -42,11 +42,12 @@ Personalize as configurações de backup no script, como os caminhos locais e re
  remote_file_path = "/bkp/"
  ```
 
- Schedule the backup function to run every time
+3.**Agendamento**
+Agendar a função de backup para ser executada todos os dias às 5 horas da manhã
 
- ```python
- schedule.every(5).minutes.do(backup)
- ```
+```bash
+schedule.every().day.at("05:00").do(backup)
+```
 
 # Acessar servidor local
 
