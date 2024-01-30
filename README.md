@@ -50,15 +50,15 @@ pip install paramiko
 ```
 # Acessar servidor local
 
-Para acessar o server local é recomendando acessar via SSH port:22, sendo possivel outros meios também.
+Para acessar o server local é recomendando acessar via SSH, sendo possivel outros meios também.
 
 ```bash
-ssh root@192.168.254.151 -22
+ssh local_server_route -port
 ```
 
 Entrar no diretório em que o code se localiza:
 ```bash
-cd bkp_voalle
+cd path
 ```
 
 ## Execução em Segundo Plano
