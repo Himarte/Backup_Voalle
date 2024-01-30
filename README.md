@@ -1,16 +1,17 @@
 # Backup Automático com Paramiko e Schedule
 
-Este é um script Python projetado para rodar em segundo plano em um servidor TrueNAS, realizando backups automáticos de arquivos de um servidor remoto para um diretório local. O script utiliza as bibliotecas `paramiko` para conexão SSH e `schedule` para agendamento de tarefas.
+Este é um script Python projetado para rodar em segundo plano em um servidor Linux, realizando backups automáticos de arquivos de um servidor remoto para um diretório local. O script utiliza as bibliotecas `paramiko` para conexão SSH e `schedule` para agendamento de tarefas.
 
 ## Descrição
 
 O script realiza a seguinte operação:
 
 1. Conecta-se ao servidor remoto por meio de uma conexão SSH utilizando a biblioteca `paramiko`.
-2. Verifica o número de arquivos no diretório de backup local e exclui os mais antigos se houver mais de 10.
+2. Verifica o número de arquivos no diretório de backup local e exclui os mais antigos se forem diferentes do arquivo remoto.
 3. Estabelece uma conexão SFTP (SSH File Transfer Protocol) para o servidor remoto.
 4. Baixa cada arquivo do diretório remoto para o diretório local de backup, exibindo o progresso da transferência.
-5. Agendamento da função de backup para ser executada a cada 12 horas usando a biblioteca `schedule`.
+5. Agendamento da função de backup para ser executada toda dia as 5 horas da manhã usando a biblioteca `schedule`.
+6. Todo e qualuqer erro é armazenado no arquivo backup.log, localizado junto ao código no diretório.
 
 ## Requisitos
 
@@ -38,7 +39,7 @@ port = 22
 Personalize as configurações de backup no script, como os caminhos locais e remotos, bem como a frequência do agendamento.
 
  ```python
- local_file_path = "/root/bkp_voalle/bkp/"
+ local_file_path = "/mnt/MestreDosMagos/Sistemas/bkpVoalle"
  remote_file_path = "/bkp/"
  ```
 
