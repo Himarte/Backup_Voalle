@@ -4,110 +4,108 @@ import schedule
 import time
 import glob
 import logging
-import credentials
 
 logging.basicConfig(filename="backup.log", level=logging.INFO)
 
 
-def print_progress(transferred, to_be_transferred):
-    print(f"Progress: {transferred / to_be_transferred * 100:.2f}%")
+#def print_progress(transferred, to_be_transferred):
+ #   print(f"Progress: {transferred / to_be_transferred * 100:.2f}%")
 
 
 def BackupDados():
-    local_file_path = credentials.local_file_path1
-    remote_file_path = credentials.remote_file_path1
+    local_file_path = "/mnt/MestreDosMagos/Sistemas/bkpVoalle/Dados"
+    remote_file_path = "/bkp/"
 
     try:
-        # cria um cliente ssh
+        # create ssh client
         ssh_client = paramiko.SSHClient()
 
-        # credenciais do servidor remoto
-        host = credentials.host1
-        username = credentials.username1
-        password = credentials.password1
-        port = credentials.port1
+        # remote server credentials
+        host = "synsuite.himarte.com.br"
+        username = "backup_erp"
+        password = "4WCDfvq!"
+        port = 22
 
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh_client.connect(
             hostname=host, port=port, username=username, password=password
         )
 
-        # cria um objeto cliente SFTP
+        # create an SFTP client object
         ftp = ssh_client.open_sftp()
 
-        # checa os arquivos no diretório remoto
+        # get list of all files in remote directory
         remote_files = ftp.listdir(remote_file_path)
 
-        # checa os arquivos no diretório de backup
+        # check the files in the backup directory
         files = glob.glob(os.path.join(local_file_path, "*"))
         files.sort(key=os.path.getmtime)
 
-        # se o arquivo local não estiver na lista de arquivos remotos, exclua-o
+         # remove all local files
         for file in files:
-            if os.path.basename(file) not in remote_files:
-                os.remove(file)
-                files.remove(file)
+            os.remove(file)
+               
 
-        # download archivo por archivo
+        # download each file
         for file in remote_files:
             ftp.get(
                 os.path.join(remote_file_path, file),
                 os.path.join(local_file_path, file),
-                callback=print_progress,
+                #callback=print_progress,
             )
 
-        # fechar conexão
+        # close the connection
         ftp.close()
         ssh_client.close()
         logging.info("Backup Dados successfully completed.")
     except Exception as e:
         logging.error(f"Error during BackupDados: {e}")
-
+    
 
 def BackupRadius():
-    local_file_path = credentials.local_file_path2
-    remote_file_path = credentials.remote_file_path2
+    local_file_path = "/mnt/MestreDosMagos/Sistemas/bkpVoalle/Radius"
+    remote_file_path = "/bkp/"
 
     try:
-        # cria um cliente ssh
+        # create ssh client
         ssh_client = paramiko.SSHClient()
 
-        # credenciais do servidor remoto
-        host = credentials.host2
-        username = credentials.username2
-        password = credentials.password2
-        port = credentials.port2
+        # remote server credentials
+        host = "190.111.179.188"
+        username = "backup_erp"
+        password = "4WCDfvq!"
+        port = 22512
 
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh_client.connect(
             hostname=host, port=port, username=username, password=password
         )
 
-        # cria um objeto cliente SFTP
+        # create an SFTP client object
         ftp = ssh_client.open_sftp()
 
-        # checa os arquivos no diretório remoto
+        # get list of all files in remote directory
         remote_files = ftp.listdir(remote_file_path)
 
-        # confere os arquivos no diretório de backup
+        # check the files in the backup directory
         files = glob.glob(os.path.join(local_file_path, "*"))
         files.sort(key=os.path.getmtime)
 
-        # se o arquivo local não estiver na lista de arquivos remotos, exclua-o
+         # remove all local files
         for file in files:
-            if os.path.basename(file) not in remote_files:
-                os.remove(file)
-                files.remove(file)
+            os.remove(file)
 
-        # download arquivo por arquivo
+        
+
+        # download each file
         for file in remote_files:
             ftp.get(
                 os.path.join(remote_file_path, file),
                 os.path.join(local_file_path, file),
-                callback=print_progress,
+               # callback=print_progress,
             )
 
-        # fecha conexão
+        # close the connection
         ftp.close()
         ssh_client.close()
         logging.info("Backup Radius successfully completed.")
@@ -115,8 +113,13 @@ def BackupRadius():
         logging.error(f"Error during BackupRadius: {e}")
 
 
-# agendar a função de backup para ser executada todos os dias às 5 horas da manhã
-schedule.every().day.at("05:00").do(BackupDados, BackupRadius)
+def BackupVoalle():
+    BackupDados()
+    BackupRadius()
+
+# Agendar a função de backup para ser executada todos os dias às 5 horas da manhã
+schedule.every().day.at("04:00").do(BackupVoalle)
+
 
 while True:
     schedule.run_pending()
